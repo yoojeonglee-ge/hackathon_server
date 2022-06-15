@@ -11,7 +11,19 @@ app.use('/', router);
 
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
-router.post('/', (req, res) => {
+router.get('/humidity', (req, res) => {
+   console.log(req.body.test);
+   res.status(200);
+   res.end('ok');
+});
+
+router.get('/humidity', (req, res) => {
+   console.log(req.body.test);
+   res.status(200);
+   res.end('ok');
+});
+
+router.get('/humidity', (req, res) => {
    console.log(req.body.test);
    res.status(200);
    res.end('ok');
