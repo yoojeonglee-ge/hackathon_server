@@ -20,5 +20,38 @@ MongoClient.connect(connectionString)
    .then(client => {
       console.log('Connected to Database');
       const db = client.db('Cluster0');
+      const moistureData = db.collection('moisture');
+      const temperatureData = db.collection('temperature');
+      const phData = db.collection('ph');
+
+      router.post('/moisture', (req, res) => {
+         moistureData.insertOne(req.body)
+            .then(result => {
+               console.log(result);
+               res.status(200);
+               res.end('ok');
+            })
+            .catch(error => console.error(error));
+      })
+
+      router.post('/temperature', (req, res) => {
+         temperatureData.insertOne(req.body)
+            .then(result => {
+               console.log(result);
+               res.status(200);
+               res.end('ok');
+            })
+            .catch(error => console.error(error));
+      })
+
+      router.post('/ph', (req, res) => {
+         phData.insertOne(req.body)
+            .then(result => {
+               console.log(result);
+               res.status(200);
+               res.end('ok');
+            })
+            .catch(error => console.error(error));
+      })
    })
    .catch(console.error);
