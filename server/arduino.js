@@ -28,7 +28,7 @@ MongoClient.connect(connectionString)
       const db = client.db('Cluster0');
       const plantData = db.collection('plantData');
 
-      router.post('/plantdata', (req, res) => {
+      router.post('/plant', (req, res) => {
          plantData.insertOne(req.body)
             .then(result => {
                console.log(result);
@@ -38,5 +38,3 @@ MongoClient.connect(connectionString)
       })
    })
    .catch(console.error);
-
-// how to arbitrarily send data to the arduino

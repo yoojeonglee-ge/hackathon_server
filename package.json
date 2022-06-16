@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/arduino & node server/mobile & node server/rasberry",
-    "dev": "nodemon server/arduino & nodemon server/mobile & nodemon server/raspberry"
+    "start": "node server/arduino & node server/mobile",
+    "dev": "nodemon server/arduino & nodemon server/mobile"
   },
   "keywords": [],
   "author": "",

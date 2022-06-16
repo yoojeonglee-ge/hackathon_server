@@ -21,7 +21,7 @@ MongoClient.connect(connectionString)
       console.log('Connected to Database Mobile');
       const db = client.db('Cluster0');
 
-      router.get('/plantdata', (req, res) => {
+      router.get('/plant', (req, res) => {
          db.collection('plantData').find().toArray()
             .then(results => {
                console.log(results[results.length - 1]);
@@ -31,7 +31,31 @@ MongoClient.connect(connectionString)
             .catch(error => console.error(error))
       })
 
-      router.put('/plantdata', (req, res) => {
+      router.get('/water', (req, res) => {
+         router.post('https://localhost:5000/water', (innerReq, innerRes) => {
+            innerRes.send({"message": "waterCommand"});
+            innerRes.end('ok');
+         })
+         res.end('ok');
+      })
+
+      router.post('/camera/direction', (req, res) => {
+         router.post('https://localhost:5000/camera/direction', (innerReq, innerRes) => {
+            innerRes.send({"message": req.body.message + "\nStop\n", "success": "true"});
+            innerRes.end('ok');
+         })
+         res.end('ok');
+      })
+
+      router.post('/camera/location', (req, res) => {
+         router.post('https://localhost:5000/camera/location', (innerReq, innerRes) => {
+            innerRes.send({"message": req.body.message, "success": "true"});
+            innerRes.end('ok');
+         })
+         res.end('ok');
+      })
+
+      router.put('/plant', (req, res) => {
          db.collection('plantData')
             .updateOne({ "plantID": req.body.plantID }, { $set: { "cameraPosition": req.body.cameraPosition } })
             .then(() => {
