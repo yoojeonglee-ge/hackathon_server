@@ -1,9 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-const PORT = 4000;
-
+const dotenv = require('dotenv');
 const app = express();
+const PORT = 4000;
+const MongoClient = require('mongodb').MongoClient;
+
+dotenv.config();
+
+const connectionString = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.zbvca1i.mongodb.net/?retryWrites=true&w=majority`;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,20 +16,29 @@ app.use('/', router);
 
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
-router.get('/humidity', (req, res) => {
-   console.log(req.body.test);
-   res.status(200);
-   res.end('ok');
-});
+MongoClient.connect(connectionString)
+   .then(client => {
+      console.log('Connected to Database Mobile');
+      const db = client.db('Cluster0');
 
-router.get('/humidity', (req, res) => {
-   console.log(req.body.test);
-   res.status(200);
-   res.end('ok');
-});
+      router.get('/plantdata', (req, res) => {
+         db.collection('plantData').find().toArray()
+            .then(results => {
+               console.log(results[results.length - 1]);
+               res.send(results[results.length - 1]);
+               res.end('ok');
+            })
+            .catch(error => console.error(error))
+      })
 
-router.get('/humidity', (req, res) => {
-   console.log(req.body.test);
-   res.status(200);
-   res.end('ok');
-})
+      router.put('/plantdata', (req, res) => {
+         db.collection('plantData')
+            .updateOne({ "plantID": req.body.plantID }, { $set: { "cameraPosition": req.body.cameraPosition } })
+            .then(() => {
+               console.log(req.body);
+               res.end('ok');
+            })
+            .catch(error => console.error(error))
+      })
+   })
+   .catch(console.error);

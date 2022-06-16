@@ -16,42 +16,27 @@ app.use('/', router);
 
 app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
 
+// router.get('/', (req, res) => {
+//    console.log('connected');
+//    res.send({"message": "camLeft", "success": "true"});
+//    // res.end('ok');
+// })
+
 MongoClient.connect(connectionString)
    .then(client => {
       console.log('Connected to Database');
       const db = client.db('Cluster0');
-      const moistureData = db.collection('moisture');
-      const temperatureData = db.collection('temperature');
-      const phData = db.collection('ph');
+      const plantData = db.collection('plantData');
 
-      router.post('/moisture', (req, res) => {
-         moistureData.insertOne(req.body)
+      router.post('/plantdata', (req, res) => {
+         plantData.insertOne(req.body)
             .then(result => {
                console.log(result);
-               res.status(200);
-               res.end('ok');
-            })
-            .catch(error => console.error(error));
-      })
-
-      router.post('/temperature', (req, res) => {
-         temperatureData.insertOne(req.body)
-            .then(result => {
-               console.log(result);
-               res.status(200);
-               res.end('ok');
-            })
-            .catch(error => console.error(error));
-      })
-
-      router.post('/ph', (req, res) => {
-         phData.insertOne(req.body)
-            .then(result => {
-               console.log(result);
-               res.status(200);
                res.end('ok');
             })
             .catch(error => console.error(error));
       })
    })
    .catch(console.error);
+
+// how to arbitrarily send data to the arduino
